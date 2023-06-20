@@ -95,3 +95,10 @@ section {
   width: 100%;
   font-size: calc(8px + 1.2vw);
 }
+
+#stamp {
+  min-width: 50px;
+  max-width: 200px;
+  position: relative;
+  float: right;
+}

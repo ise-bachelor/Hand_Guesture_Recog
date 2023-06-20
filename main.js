@@ -11,6 +11,8 @@ let enableWebcamButton;
 let webcamRunning = false;
 const videoHeight = "360px";
 const videoWidth = "480px";
+const stampContinueCount = 3000;
+let timerId = null;
 
 // Before we can use HandLandmarker class we must wait for it to finish
 // loading. Machine Learning models can be large and take a moment to
@@ -83,6 +85,29 @@ function enableCam(event) {
   });
 }
 
+const onlyGestures = [
+  "None", 
+  "Closed_Fist",
+  "Pointing_Up",
+];
+
+function displayStamp(gestureName){
+  if(onlyGestures.includes(gestureName)){
+    return;
+  }
+  const stampElement = document.getElementById("stamp");
+  stampElement.src = "./assets/" + gestureName + ".jpg";
+  if(timerId != null){
+    clearTimeout(timerId);
+  }
+  timerId = setTimeout(hiddenStamp, stampContinueCount);
+}
+
+function hiddenStamp() {
+  const stampElement = document.getElementById("stamp");
+  stampElement.src = "";
+}
+
 let lastVideoTime = -1;
 let results = undefined;
 async function predictWebcam() {
@@ -119,6 +144,7 @@ async function predictWebcam() {
     gestureOutput.style.display = "block";
     gestureOutput.style.width = videoWidth;
     const categoryName = results.gestures[0][0].categoryName;
+    displayStamp(categoryName);
     const categoryScore = parseFloat(
       results.gestures[0][0].score * 100
     ).toFixed(2);
