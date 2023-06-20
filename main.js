@@ -37,7 +37,7 @@ const init = async () =>{
       {
         baseOptions: {
           modelAssetPath: "./hand_landmarker.task", //.taskファイルを指定する
-          delegate: "GPU" //CPU or GPUで処理するかを指定する
+          delegate: "CPU" //CPU or GPUで処理するかを指定する
         },
         numHands: 2 //認識できる手の数
       });
