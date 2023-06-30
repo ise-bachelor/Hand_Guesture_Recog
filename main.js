@@ -85,6 +85,14 @@ function enableCam(event) {
   });
 }
 
+const Gestures = [
+  "Open_Palm",
+  "ILoveYou",
+  "Thumb_Up",
+  "Thumb_Down",
+  "Victory"
+]
+
 const onlyGestures = [
   "None", 
   "Closed_Fist",
@@ -92,10 +100,11 @@ const onlyGestures = [
 ];
 
 function displayStamp(gestureName){
-  if(onlyGestures.includes(gestureName)){
+  if(onlyGestures.includes(gestureName) && !Gestures.includes(gestureName)){
     return;
   }
   const stampElement = document.getElementById("stamp");
+  stampElement.style.width = String(calcInputDegree()*300)+"px";
   stampElement.src = "./assets/" + gestureName + ".jpg";
   if(timerId != null){
     clearTimeout(timerId);
@@ -106,6 +115,7 @@ function displayStamp(gestureName){
 function hiddenStamp() {
   const stampElement = document.getElementById("stamp");
   stampElement.src = "";
+  stampElement.style.width = null;
 }
 
 let lastVideoTime = -1;
@@ -156,4 +166,31 @@ async function predictWebcam() {
   if (webcamRunning === true) {
     window.requestAnimationFrame(predictWebcam);
   }
+}
+
+let beginHandPos;
+let isBegining = 1;
+function calcInputDegree() {
+  // measure only when a camera recognizes a gesture.
+  if(!isRecognizedGesture){
+    return;
+  }
+
+  // Use the position "MIDDLE_FINGER_MCP" to measure how much user's hand up or down.
+  if(isBegining){
+    beginHandPos = results.landmarks[0][9].y;
+    isBegining = 0;
+  }
+
+  // Calc delta of y-coordinate.
+  // This formula's order of subtraction is reverse.
+  // Because y-axis direction is upside down.
+  return beginHandPos - results.landmarks[0][9].y;
+}
+
+function isRecognizedGesture(){
+  if(Gestures.includes(results.gestures[0][0].categoryName)){
+    return 1;
+  }
+  return 0;
 }
