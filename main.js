@@ -102,10 +102,10 @@ const onlyGestures = [
 ];
 
 function displayStamp(gestureName){
-  timeAll += 0.01;
-  let timeOfGesPerAll = timeGesture/timeAll;
+  let timeOfGesPerAll = 4294967295*min(1, timeGesture/timeAll);
   const geuturePercent = document.getElementById("gesture_percent");
   geuturePercent.textContent = timeOfGesPerAll;
+  geuturePercent.style.color = "#"+timeOfGesPerAll.toString(16);
   if(onlyGestures.includes(gestureName) && !Gestures.includes(gestureName)){
     return;
   }
@@ -128,6 +128,7 @@ function hiddenStamp() {
 let lastVideoTime = -1;
 let results = undefined;
 async function predictWebcam() {
+  timeAll += 0.01;
   const webcamElement = document.getElementById("webcam");
   // Now let's start detecting the stream.
   if (runningMode === "IMAGE") {
