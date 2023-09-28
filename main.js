@@ -13,6 +13,8 @@ const videoHeight = "360px";
 const videoWidth = "480px";
 const stampContinueCount = 3000;
 let timerId = null;
+let timeGesture = 0;
+let timeAll = 0;
 
 // Before we can use HandLandmarker class we must wait for it to finish
 // loading. Machine Learning models can be large and take a moment to
@@ -100,9 +102,14 @@ const onlyGestures = [
 ];
 
 function displayStamp(gestureName){
+  timeAll += 0.01;
+  let timeOfGesPerAll = timeGesture/timeAll;
+  const geuturePercent = document.getElementById("gesture_percent");
+  geuturePercent.textContent = timeOfGesPerAll;
   if(onlyGestures.includes(gestureName) && !Gestures.includes(gestureName)){
     return;
   }
+  timeGesture += 0.01;
   const stampElement = document.getElementById("stamp");
   stampElement.style.width = String(calcInputDegree()*300)+"px";
   stampElement.src = "./assets/" + gestureName + ".jpg";
