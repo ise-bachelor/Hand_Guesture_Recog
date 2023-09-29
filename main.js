@@ -106,6 +106,7 @@ function displayStamp(gestureName){
   const geuturePercent = document.getElementById("gesture_percent");
   geuturePercent.textContent = timeOfGesPerAll;
   geuturePercent.style.color = "#"+timeOfGesPerAll.toString(16);
+  console.log(timeOfGesPerAll.toString(16));
   if(onlyGestures.includes(gestureName) && !Gestures.includes(gestureName)){
     return;
   }
