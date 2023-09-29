@@ -102,7 +102,7 @@ const onlyGestures = [
 ];
 
 function displayStamp(gestureName){
-  let timeOfGesPerAll = 4294967295*Math.min(1, timeGesture/timeAll);
+  let timeOfGesPerAll = Math.floor(4294967295*Math.min(1, timeGesture/timeAll));
   const geuturePercent = document.getElementById("gesture_percent");
   geuturePercent.textContent = timeOfGesPerAll;
   geuturePercent.style.color = "#"+timeOfGesPerAll.toString(16);
